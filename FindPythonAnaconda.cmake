@@ -67,11 +67,13 @@ if(NOT CMAKE_FIND_ANACONDA_PYTHON_INCLUDED)
 
     set(_py_id "python${ANACONDA_PYTHON_VERSION}${_py_ext}")
     
-    set( env_CONDA_DEFAULT_ENV $ENV{CONDA_DEFAULT_ENV} )
-    if( NOT DEFINED $ENV{CONDA_DEFAULT_ENV} )
+    if( NOT DEFINED ENV{CONDA_DEFAULT_ENV} )
       set( env_CONDA_DEFAULT_ENV "root" )
+    else()
+      message( WARNING "Could not find anaconda environment setting; using default root" )
+      set( env_CONDA_DEFAULT_ENV $ENV{CONDA_DEFAULT_ENV} )
     endif()
-    
+
     message( "Using anaconda ${env_CONDA_DEFAULT_ENV} environment" )
     if( env_CONDA_DEFAULT_ENV STREQUAL "root" )
       set(PYTHON_INCLUDE_DIR "${ANACONDA_PYTHON_DIR}/include/${_py_id}" CACHE INTERNAL "")
