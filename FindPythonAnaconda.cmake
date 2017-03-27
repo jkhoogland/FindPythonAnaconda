@@ -71,8 +71,8 @@ if(NOT CMAKE_FIND_ANACONDA_PYTHON_INCLUDED)
     
     if( NOT DEFINED ENV{CONDA_DEFAULT_ENV} )
       set( env_CONDA_DEFAULT_ENV "root" )
-    else()
       message( WARNING "Could not find anaconda environment setting; using default root" )
+    else()
       set( env_CONDA_DEFAULT_ENV $ENV{CONDA_DEFAULT_ENV} )
     endif()
 
