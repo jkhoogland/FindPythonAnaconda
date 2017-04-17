@@ -1,5 +1,6 @@
 # tested on OSX Yosemite and Ubuntu 14.04 LTS
 # handle anaconda dependencies
+cmake_minimum_required(VERSION 3.7)
 
 option(ANACONDA_PYTHON_VERBOSE "Anaconda dependency info" OFF)
 
@@ -24,7 +25,9 @@ if(NOT CMAKE_FIND_ANACONDA_PYTHON_INCLUDED)
     message("_e = ${_e}")
   endif()
 
-  string (REGEX MATCH "anaconda" ANACONDA_PYTHON_FOUND "${_o}")
+  IF(IS_DIRECTORY ${_o})
+     set(ANACONDA_PYTHON_FOUND True)
+  endif()
 
   if(ANACONDA_PYTHON_FOUND)
     set( ANACONDA_PYTHON_DIR ${_o} )
@@ -32,7 +35,6 @@ if(NOT CMAKE_FIND_ANACONDA_PYTHON_INCLUDED)
 
     # find python version
     #
-    # bloody cmake puts it in error variable ???
     set(_cmd python --version)
     execute_process(
       COMMAND ${_cmd}
@@ -50,7 +52,7 @@ if(NOT CMAKE_FIND_ANACONDA_PYTHON_INCLUDED)
       message("_e = ${_e}")
     endif()
     
-    string (REGEX MATCH "Python ([0-9]+)[.]([0-9]+)[.]([0-9]+)" _py_version_found "${_e}")
+    string (REGEX MATCH "Python ([0-9]+)[.]([0-9]+)[.]([0-9]+)" _py_version_found "${_o}")
     #message("_py_version_found = ${_py_version_found}")
     #message("CMAKE_MATCH_0 = ${CMAKE_MATCH_0}")
     set( _py_version_major ${CMAKE_MATCH_1} )
@@ -69,8 +71,8 @@ if(NOT CMAKE_FIND_ANACONDA_PYTHON_INCLUDED)
     
     if( NOT DEFINED ENV{CONDA_DEFAULT_ENV} )
       set( env_CONDA_DEFAULT_ENV "root" )
-    else()
       message( WARNING "Could not find anaconda environment setting; using default root" )
+    else()
       set( env_CONDA_DEFAULT_ENV $ENV{CONDA_DEFAULT_ENV} )
     endif()
 
